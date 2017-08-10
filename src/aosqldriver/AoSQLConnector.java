@@ -10,19 +10,23 @@ import org.neo4j.driver.v1.*;
 
 public class AoSQLConnector {
 
-    final private String neo4jUserName = "neo4j";
-    final private String neo4jPassword = "asdasd";
+    final private String defaultNeo4jUserName = "neo4j";
+    final private String defaultNeo4jPassword = "neo4j";
     final private String neo4jServer = "bolt://localhost";
 
     Driver driver;
     Session session;
 
-    public void connect() {
-        driver = GraphDatabase.driver(neo4jServer, AuthTokens.basic(neo4jUserName, neo4jPassword));
+    public void connect(String password) {
+        driver = GraphDatabase.driver(neo4jServer, AuthTokens.basic(defaultNeo4jUserName, password));
         session = driver.session();
 
         session.run("CREATE (l:_ÅSQL:_ÅSQL_Log {log:'conncet', date:'" + System.currentTimeMillis() + "'})");
 
+    }
+
+    public void connect() {
+        connect(defaultNeo4jPassword);
     }
 
     public String test() {
